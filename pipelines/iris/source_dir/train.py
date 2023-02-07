@@ -3,8 +3,10 @@ import logging
 import argparse
 import numpy as np
 import pandas as pd
+
 # import mlflow.sklearn
 from sklearn.tree import DecisionTreeClassifier
+from sklearn import metrics
 
 logging.basicConfig(level=logging.INFO)
 
