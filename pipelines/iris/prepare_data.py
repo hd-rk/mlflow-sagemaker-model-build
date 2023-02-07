@@ -13,7 +13,7 @@ if __name__ == "__main__":
     logger.info("Running data preparation...")
     
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=str, default="")
+    parser.add_argument("--output-dir", type=str, default="")
     args, _ = parser.parse_known_args()
 
     # Load the Iris dataset from sk-learn
@@ -30,6 +30,6 @@ if __name__ == "__main__":
     logger.info(trainX.head(10))
     
     # save train and test CSV files
-    logger.info(f"Writing data to {args.output}")
-    trainX.to_csv(f'{args.output}/iris_train.csv')
-    testX.to_csv(f'{args.output}/iris_test.csv')
+    logger.info(f"Writing data to {args.output_dir}")
+    trainX.to_csv(f'{args.output_dir}/iris_train.csv')
+    testX.to_csv(f'{args.output_dir}/iris_test.csv')
