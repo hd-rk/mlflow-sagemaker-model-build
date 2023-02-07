@@ -167,16 +167,26 @@ def get_pipeline(
         sagemaker_session=pipeline_session,
         role=role,
     )
-    step_args = sklearn_processor.run(
-        outputs=[
-            ProcessingOutput(output_name="output", source="/opt/ml/processing/output"),
-        ],
-        code=os.path.join(BASE_DIR, "prepare_data.py"),
-        arguments=["--output-dir", "/opt/ml/processing/output"],
-    )
+    # step_args = sklearn_processor.run(
+    #     outputs=[
+    #         ProcessingOutput(output_name="data", source="/opt/ml/processing/data"),
+    #     ],
+    #     code=os.path.join(BASE_DIR, "prepare_data.py"),
+    #     arguments=["--output-dir", "/opt/ml/processing/data"],
+    # )
+    
     step_process = ProcessingStep(
         name="PrepareIrisData",
-        step_args=step_args,
+        processor=sklearn_processor,
+        code=os.path.join(BASE_DIR, 'prepare_data.py'),
+        job_arguments=['--output-dir', '/opt/ml/processing/data'],
+        outputs=[
+            ProcessingOutput(
+                output_name='data',
+                source='/opt/ml/processing/data',
+            )
+        ]
+        # step_args=step_args,
     )
 
     # training step for generating model artifacts
@@ -210,7 +220,7 @@ def get_pipeline(
         estimator=estimator,
         inputs={
             "input": TrainingInput(
-                s3_data=step_process.properties.ProcessingOutputConfig.Outputs["output"].S3Output.S3Uri,
+                s3_data=step_process.properties.ProcessingOutputConfig.Outputs["data"].S3Output.S3Uri,
                 content_type="text/csv",
             ),
         },
