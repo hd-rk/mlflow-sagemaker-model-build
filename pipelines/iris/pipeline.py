@@ -197,13 +197,11 @@ def get_pipeline(
 
     # training step for generating model artifacts
     hyperparameters = {
-        # 'tracking_uri': tracking_uri,
-        # 'experiment_name': experiment_name,
-        # 'registered_model_name': registered_model_name,
+        'mlflow_tracking_uri': mlflow_tracking_uri,
+        'mlflow_experiment_name': mlflow_experiment_name,
+        'mlflow_model_name': mlflow_model_name,
         'train-file': 'iris_train.csv',
         'test-file': 'iris_test.csv',
-        # 'max-leaf-nodes': 4,
-        # 'max-depth': 2,
     }
 
     metric_definitions = [
@@ -221,7 +219,7 @@ def get_pipeline(
         instance_type=training_instance_type,
         framework_version='0.23-1',
         base_job_name=f"{base_job_prefix}/sklearn-iris-train",
-        # sagemaker_session=pipeline_session,
+        sagemaker_session=pipeline_session,
         disable_profiler=True
     )
     
