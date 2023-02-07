@@ -68,7 +68,8 @@ if __name__ == '__main__':
     test_accuracy = metrics.accuracy_score(y_test, y_pred)
     test_f1_score = metrics.f1_score(y_test, y_pred, average='weighted')
     # test_metrics = (test_accuracy, test_f1_score)
-    logging.info(f'accuracy={test_accuracy}, f1={test_f1_score}')
+    logging.info(f'metric_accuracy={test_accuracy}')
+    logging.info(f'metric_f1={test_f1_score}')
 
 
 

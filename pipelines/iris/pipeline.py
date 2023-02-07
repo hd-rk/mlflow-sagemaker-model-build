@@ -200,13 +200,16 @@ def get_pipeline(
         'max-depth': 2,
     }
 
-    # metric_definitions = [{'Name': 'median-AE', 'Regex': "AE-at-50th-percentile: ([0-9.]+).*$"}]
+    metric_definitions = [
+        {'Name': 'accuracy', 'Regex': "metric_accuracy=([0-9.]+).*$"},
+        {'Name': 'f1', 'Regex': "metric_f1=([0-9.]+).*$"},
+    ]
 
     estimator = SKLearn(
         entry_point='train.py',
         source_dir=os.path.join(BASE_DIR, 'source_dir'),
         role=role,
-        # metric_definitions=metric_definitions,
+        metric_definitions=metric_definitions,
         hyperparameters=hyperparameters,
         instance_count=1,
         instance_type=training_instance_type,
