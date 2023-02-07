@@ -169,8 +169,7 @@ def get_pipeline(
     )
     step_args = sklearn_processor.run(
         outputs=[
-            ProcessingOutput(output_name="train", source="/opt/ml/processing/iris_train.csv"),
-            ProcessingOutput(output_name="test", source="/opt/ml/processing/iris_test.csv"),
+            ProcessingOutput(output_name="output", source="/opt/ml/processing"),
         ],
         code=os.path.join(BASE_DIR, "prepare_data.py"),
         arguments=["--output-dir", "/opt/ml/processing"],
@@ -185,8 +184,8 @@ def get_pipeline(
         # 'tracking_uri': tracking_uri,
         # 'experiment_name': experiment_name,
         # 'registered_model_name': registered_model_name,
-        # 'train-file': 'iris_train.csv',
-        # 'test-file': 'iris_test.csv',
+        'train-file': 'iris_train.csv',
+        'test-file': 'iris_test.csv',
         'max-leaf-nodes': 4,
         'max-depth': 2,
     }
@@ -210,14 +209,10 @@ def get_pipeline(
         name="TrainModel",
         estimator=estimator,
         inputs={
-            "train": TrainingInput(
-                s3_data=step_process.properties.ProcessingOutputConfig.Outputs["train"].S3Output.S3Uri,
+            "input": TrainingInput(
+                s3_data=step_process.properties.ProcessingOutputConfig.Outputs["output"].S3Output.S3Uri,
                 content_type="text/csv",
             ),
-            "test": TrainingInput(
-                s3_data=step_process.properties.ProcessingOutputConfig.Outputs["test"].S3Output.S3Uri,
-                content_type="text/csv",
-            )
         },
     )
 #     model_path = f"s3://{sagemaker_session.default_bucket()}/{base_job_prefix}/AbaloneTrain"

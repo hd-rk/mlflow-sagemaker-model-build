@@ -20,9 +20,9 @@ if __name__ == '__main__':
     parser.add_argument('--max-depth', type=int, default=1)
 
     # input
-    # parser.add_argument('--input-dir', type=str, default=os.environ.get('SM_CHANNEL_TRAIN'))
-    parser.add_argument('--train-file', type=str, default=os.environ.get('SM_CHANNEL_TRAIN'))
-    parser.add_argument('--test-file', type=str, default=os.environ.get('SM_CHANNEL_TEST'))
+    parser.add_argument('--input-dir', type=str, default=os.environ.get('SM_CHANNEL_INPUT'))
+    parser.add_argument('--train-file', type=str, default="")
+    parser.add_argument('--test-file', type=str, default="")
 
     args, _ = parser.parse_known_args()
 
@@ -30,8 +30,8 @@ if __name__ == '__main__':
     train_df = pd.read_csv(args.train_file)
     test_df = pd.read_csv(args.test_file)
     
-    # train_df = pd.read_csv(f'{args.input_dir}/{args.train_file}')
-    # test_df = pd.read_csv(f'{args.input_dir}/{args.test_file}')
+    train_df = pd.read_csv(f'{args.input_dir}/{args.train_file}')
+    test_df = pd.read_csv(f'{args.input_dir}/{args.test_file}')
 
     X_train = train_df[args.features.split()]
     y_train = train_df[args.target]
