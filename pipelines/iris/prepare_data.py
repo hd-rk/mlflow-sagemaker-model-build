@@ -10,7 +10,7 @@ logger.addHandler(logging.StreamHandler())
 
 
 if __name__ == "__main__":
-    logger.debug("Running data preparation...")
+    logger.info("Running data preparation...")
     
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=str, default="")

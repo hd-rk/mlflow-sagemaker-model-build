@@ -152,10 +152,10 @@ def get_pipeline(
     model_approval_status = ParameterString(
         name="ModelApprovalStatus", default_value="PendingManualApproval"
     )
-    input_data = ParameterString(
-        name="InputDataUrl",
-        default_value=f"s3://sagemaker-servicecatalog-seedcode-{region}/dataset/abalone-dataset.csv",
-    )
+    # input_data = ParameterString(
+    #     name="InputDataUrl",
+    #     default_value=f"s3://sagemaker-servicecatalog-seedcode-{region}/dataset/abalone-dataset.csv",
+    # )
 
     # processing step for feature engineering
     sklearn_processor = SKLearnProcessor(
@@ -320,7 +320,6 @@ def get_pipeline(
             processing_instance_count,
             training_instance_type,
             model_approval_status,
-            input_data,
         ],
         # steps=[step_process, step_train, step_eval, step_cond],
         steps=[step_process],
