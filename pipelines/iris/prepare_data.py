@@ -27,6 +27,9 @@ if __name__ == "__main__":
     testX = pd.DataFrame(X_test, columns=data.feature_names)
     testX['target'] = y_test
 
+    logger.info(trainX.head(10))
+    
     # save train and test CSV files
+    logger(f"Writing data to {args.output}")
     trainX.to_csv(f'{args.output}/iris_train.csv')
     testX.to_csv(f'{args.output}/iris_test.csv')
