@@ -151,14 +151,26 @@ def get_pipeline(
     pipeline_session = get_pipeline_session(region, default_bucket)
 
     # parameters for pipeline execution
-    processing_instance_count = ParameterInteger(name="ProcessingInstanceCount", default_value=1)
-    model_approval_status = ParameterString(
-        name="ModelApprovalStatus", default_value="PendingManualApproval"
+    processing_instance_count = ParameterInteger(
+        name="ProcessingInstanceCount", 
+        default_value=1
     )
-    # input_data = ParameterString(
-    #     name="InputDataUrl",
-    #     default_value=f"s3://sagemaker-servicecatalog-seedcode-{region}/dataset/abalone-dataset.csv",
-    # )
+    model_approval_status = ParameterString(
+        name="ModelApprovalStatus",
+        default_value="PendingManualApproval"
+    )
+    mlflow_tracking_uri = ParameterString(
+        name='MLflowTrackingURI',
+        default_value='',
+    )
+    mlflow_experiment_name = ParameterString(
+        name='MLflowExperimentName',
+        default_value='sagemaker-mlflow-iris',
+    )
+    mlflow_model_name = ParameterString(
+        name='MLflowModelName',
+        default_value='sklearn-iris',
+    )
 
     # processing step for feature engineering
     sklearn_processor = SKLearnProcessor(
@@ -166,16 +178,9 @@ def get_pipeline(
         instance_type=processing_instance_type,
         instance_count=processing_instance_count,
         base_job_name=f"{base_job_prefix}/sklearn-iris-prepare-data",
-        # sagemaker_session=pipeline_session,
+        sagemaker_session=pipeline_session,
         role=role,
     )
-    # step_args = sklearn_processor.run(
-    #     outputs=[
-    #         ProcessingOutput(output_name="data", source="/opt/ml/processing/data"),
-    #     ],
-    #     code=os.path.join(BASE_DIR, "prepare_data.py"),
-    #     arguments=["--output-dir", "/opt/ml/processing/data"],
-    # )
     
     step_process = ProcessingStep(
         name="PrepareIrisData",
@@ -188,7 +193,6 @@ def get_pipeline(
                 source='/opt/ml/processing/data',
             )
         ]
-        # step_args=step_args,
     )
 
     # training step for generating model artifacts
@@ -401,6 +405,9 @@ def get_pipeline(
             processing_instance_count,
             training_instance_type,
             model_approval_status,
+            mlflow_tracking_uri,
+            mlflow_experiment_name,
+            mlflow_model_name
         ],
         # steps=[step_process, step_train, step_eval, step_cond],
         steps=[step_process, step_tuning],
