@@ -169,10 +169,10 @@ def get_pipeline(
     )
     step_args = sklearn_processor.run(
         outputs=[
-            ProcessingOutput(output_name="output", source="/opt/ml/processing"),
+            ProcessingOutput(output_name="output", source="/opt/ml/processing/output"),
         ],
         code=os.path.join(BASE_DIR, "prepare_data.py"),
-        arguments=["--output-dir", "/opt/ml/processing"],
+        arguments=["--output-dir", "/opt/ml/processing/output"],
     )
     step_process = ProcessingStep(
         name="PrepareIrisData",
