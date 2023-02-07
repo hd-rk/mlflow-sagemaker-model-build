@@ -33,11 +33,11 @@ if __name__ == '__main__':
     train_df = pd.read_csv(f'{args.input_dir}/{args.train_file}')
     test_df = pd.read_csv(f'{args.input_dir}/{args.test_file}')
 
-    X_train = train_df[args.features.split()]
-    y_train = train_df[args.target]
+    X_train = train_df.loc[:, train_df.columns != 'target']
+    y_train = train_df['target']
     
-    X_test = test_df[args.features.split()]
-    y_test = test_df[args.target]
+    X_test = test_df.loc[:, test_df.columns != 'target']
+    y_test = test_df['target']
 
     # set remote mlflow server
     # logging.info('SET EXPERIMENT IN REMOTE MLFLOW SERVER')
@@ -78,4 +78,3 @@ if __name__ == '__main__':
         #     artifact_path='model',
         #     registered_model_name=args.registered_model_name
         # )
-        
