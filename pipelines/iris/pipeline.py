@@ -212,6 +212,7 @@ def get_pipeline(
         instance_type=training_instance_type,
         framework_version='0.23-1',
         base_job_name=f"{base_job_prefix}/sklearn-iris-train",
+        sagemaker_session=pipeline_session,
         disable_profiler=True
     )
     
