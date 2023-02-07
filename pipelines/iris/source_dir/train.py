@@ -5,6 +5,8 @@ import numpy as np
 import pandas as pd
 
 import mlflow.sklearn
+import mlflow
+
 from sklearn.tree import DecisionTreeClassifier
 from sklearn import metrics
 
