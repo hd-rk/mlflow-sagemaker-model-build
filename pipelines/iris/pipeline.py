@@ -48,6 +48,7 @@ from sagemaker.workflow.steps import (
 from sagemaker.workflow.model_step import ModelStep
 from sagemaker.model import Model
 from sagemaker.workflow.pipeline_context import PipelineSession
+from sagemaker.tuner import IntegerParameter, HyperparameterTuner
 
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
