@@ -128,8 +128,8 @@ def get_pipeline(
     model_package_group_name="IrisPackageGroup",
     pipeline_name="IrisPipeline",
     base_job_prefix="Iris",
-    processing_instance_type="ml.t3.medium",
-    training_instance_type="ml.t3.medium",
+    processing_instance_type="ml.m5.large",
+    training_instance_type="ml.m5.large",
 ):
     """Gets a SageMaker ML Pipeline instance working on iris data.
 
@@ -180,6 +180,45 @@ def get_pipeline(
     )
 
     # training step for generating model artifacts
+    hyperparameters = {
+        # 'tracking_uri': tracking_uri,
+        # 'experiment_name': experiment_name,
+        # 'registered_model_name': registered_model_name,
+        # 'train-file': 'iris_train.csv',
+        # 'test-file': 'iris_test.csv',
+        'max-leaf-nodes': 4,
+        'max-depth': 2,
+    }
+
+    # metric_definitions = [{'Name': 'median-AE', 'Regex': "AE-at-50th-percentile: ([0-9.]+).*$"}]
+
+    estimator = SKLearn(
+        entry_point='train.py',
+        source_dir=os.path.join(BASE_DIR, 'source_dir'),
+        role=role,
+        # metric_definitions=metric_definitions,
+        hyperparameters=hyperparameters,
+        instance_count=1,
+        instance_type=training_instance_type,
+        framework_version='0.23-1',
+        base_job_name=f"{base_job_prefix}/sklearn-iris-train",
+        disable_profiler=True
+    )
+    
+    step_train = TrainingStep(
+        name="TrainModel",
+        estimator=estimator,
+        inputs={
+            "train": TrainingInput(
+                s3_data=step_process.properties.ProcessingOutputConfig.Outputs["train"].S3Output.S3Uri,
+                content_type="text/csv",
+            ),
+            "test": TrainingInput(
+                s3_data=step_process.properties.ProcessingOutputConfig.Outputs["test"].S3Output.S3Uri,
+                content_type="text/csv",
+            )
+        },
+    )
 #     model_path = f"s3://{sagemaker_session.default_bucket()}/{base_job_prefix}/AbaloneTrain"
 #     image_uri = sagemaker.image_uris.retrieve(
 #         framework="xgboost",
@@ -322,7 +361,7 @@ def get_pipeline(
             model_approval_status,
         ],
         # steps=[step_process, step_train, step_eval, step_cond],
-        steps=[step_process],
+        steps=[step_process, step_train],
         sagemaker_session=pipeline_session,
     )
     return pipeline
