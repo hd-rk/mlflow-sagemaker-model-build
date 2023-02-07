@@ -245,7 +245,7 @@ def get_pipeline(
         objective_metric_name=objective_metric_name,
         hyperparameter_ranges=hyperparameter_ranges,
         metric_definitions=metric_definitions,
-        max_jobs=20,
+        max_jobs=16,
         max_parallel_jobs=2,
         objective_type=objective_type,
         base_tuning_job_name=f"{base_job_prefix}/sklearn-iris-tune",
@@ -403,7 +403,7 @@ def get_pipeline(
             model_approval_status,
         ],
         # steps=[step_process, step_train, step_eval, step_cond],
-        steps=[step_process, step_train],
+        steps=[step_process, step_tuning],
         sagemaker_session=pipeline_session,
     )
     return pipeline
