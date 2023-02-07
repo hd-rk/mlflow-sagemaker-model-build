@@ -43,6 +43,7 @@ from sagemaker.workflow.properties import PropertyFile
 from sagemaker.workflow.steps import (
     ProcessingStep,
     TrainingStep,
+    TuningStep,
 )
 from sagemaker.workflow.model_step import ModelStep
 from sagemaker.model import Model
@@ -196,8 +197,8 @@ def get_pipeline(
         # 'registered_model_name': registered_model_name,
         'train-file': 'iris_train.csv',
         'test-file': 'iris_test.csv',
-        'max-leaf-nodes': 4,
-        'max-depth': 2,
+        # 'max-leaf-nodes': 4,
+        # 'max-depth': 2,
     }
 
     metric_definitions = [
@@ -219,10 +220,40 @@ def get_pipeline(
         disable_profiler=True
     )
     
-    step_train = TrainingStep(
-        name="TrainModel",
+    # step_train = TrainingStep(
+    #     name="TrainModel",
+    #     estimator=estimator,
+    #     inputs={
+    #         "input": TrainingInput(
+    #             s3_data=step_process.properties.ProcessingOutputConfig.Outputs["data"].S3Output.S3Uri,
+    #             content_type="text/csv",
+    #         ),
+    #     },
+    # )
+    
+    hyperparameter_ranges = {
+        'max-leaf-nodes': IntegerParameter(2, 5),
+        'max-depth': IntegerParameter(2, 5),
+    }
+    
+    objective_metric_name = 'accuracy'
+    objective_type = 'Maximize'
+    
+    hp_tuner = HyperparameterTuner(
         estimator=estimator,
-        inputs={
+        objective_metric_name=objective_metric_name,
+        hyperparameter_ranges=hyperparameter_ranges,
+        metric_definitions=metric_definitions,
+        max_jobs=20,
+        max_parallel_jobs=2,
+        objective_type=objective_type,
+        base_tuning_job_name=f"{base_job_prefix}/sklearn-iris-tune",
+    )
+    
+    step_tuning = TuningStep(
+        name = "IrisTuning",
+        tuner = hp_tuner,
+        inputs = {
             "input": TrainingInput(
                 s3_data=step_process.properties.ProcessingOutputConfig.Outputs["data"].S3Output.S3Uri,
                 content_type="text/csv",
