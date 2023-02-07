@@ -27,8 +27,8 @@ if __name__ == '__main__':
     args, _ = parser.parse_known_args()
 
     logging.info('READING DATA')
-    train_df = pd.read_csv(args.train_file)
-    test_df = pd.read_csv(args.test_file)
+    # train_df = pd.read_csv(args.train_file)
+    # test_df = pd.read_csv(args.test_file)
     
     train_df = pd.read_csv(f'{args.input_dir}/{args.train_file}')
     test_df = pd.read_csv(f'{args.input_dir}/{args.test_file}')
