@@ -164,7 +164,7 @@ def get_pipeline(
         instance_type=processing_instance_type,
         instance_count=processing_instance_count,
         base_job_name=f"{base_job_prefix}/sklearn-iris-prepare-data",
-        sagemaker_session=pipeline_session,
+        # sagemaker_session=pipeline_session,
         role=role,
     )
     # step_args = sklearn_processor.run(
@@ -212,7 +212,7 @@ def get_pipeline(
         instance_type=training_instance_type,
         framework_version='0.23-1',
         base_job_name=f"{base_job_prefix}/sklearn-iris-train",
-        sagemaker_session=pipeline_session,
+        # sagemaker_session=pipeline_session,
         disable_profiler=True
     )
     
