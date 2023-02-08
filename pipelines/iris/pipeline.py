@@ -197,9 +197,9 @@ def get_pipeline(
 
     # training step for generating model artifacts
     hyperparameters = {
-        'mlflow_tracking_uri': mlflow_tracking_uri,
-        'mlflow_experiment_name': mlflow_experiment_name,
-        'mlflow_model_name': mlflow_model_name,
+        'mlflow-tracking-uri': mlflow_tracking_uri,
+        'mlflow-experiment-name': mlflow_experiment_name,
+        'mlflow-model-name': mlflow_model_name,
         'train-file': 'iris_train.csv',
         'test-file': 'iris_test.csv',
     }
