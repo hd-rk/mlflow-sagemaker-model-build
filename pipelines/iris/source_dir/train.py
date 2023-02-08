@@ -47,7 +47,7 @@ if __name__ == '__main__':
 
     with mlflow.start_run():
         params = {
-            "max-leaf-nodes": args.n_estimators,
+            "max-leaf-nodes": args.max_leaf_nodes,
             "max-depth": args.max_depth,
         }
         mlflow.log_params(params)
