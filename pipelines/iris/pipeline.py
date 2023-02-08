@@ -13,7 +13,7 @@ import os
 import boto3
 import sagemaker
 import sagemaker.session
-
+# import mlflow
 from sagemaker.estimator import Estimator
 from sagemaker.inputs import TrainingInput
 from sagemaker.model_metrics import (
@@ -174,7 +174,7 @@ def get_pipeline(
 
     # processing step for feature engineering
     sklearn_processor = SKLearnProcessor(
-        framework_version="0.23-1",
+        framework_version="1.0-1",
         instance_type=processing_instance_type,
         instance_count=processing_instance_count,
         base_job_name=f"{base_job_prefix}/sklearn-iris-prepare-data",
@@ -217,7 +217,7 @@ def get_pipeline(
         hyperparameters=hyperparameters,
         instance_count=1,
         instance_type=training_instance_type,
-        framework_version='0.23-1',
+        framework_version='1.0-1',
         base_job_name=f"{base_job_prefix}/sklearn-iris-train",
         sagemaker_session=pipeline_session,
         disable_profiler=True
@@ -235,8 +235,8 @@ def get_pipeline(
     # )
     
     hyperparameter_ranges = {
-        'max-leaf-nodes': IntegerParameter(2, 5),
-        'max-depth': IntegerParameter(2, 5),
+        'max-leaf-nodes': IntegerParameter(2, 3),
+        'max-depth': IntegerParameter(2, 3),
     }
     
     objective_metric_name = 'accuracy'
@@ -247,8 +247,8 @@ def get_pipeline(
         objective_metric_name=objective_metric_name,
         hyperparameter_ranges=hyperparameter_ranges,
         metric_definitions=metric_definitions,
-        max_jobs=16,
-        max_parallel_jobs=2,
+        max_jobs=4,
+        max_parallel_jobs=4,
         objective_type=objective_type,
         base_tuning_job_name=f"{base_job_prefix}/sklearn-iris-tune",
     )
@@ -394,7 +394,23 @@ def get_pipeline(
 #         if_steps=[step_register],
 #         else_steps=[],
 #     )
+#     deploying mlflow model to sagemaker
+#     image_uri = '439162431295.dkr.ecr.us-west-2.amazonaws.com/mlflow-pyfunc:2.1.1'
+#     endpoint_name = 'mlflow-iris'
+#     # The location, in URI format, of the MLflow model to deploy to SageMaker.
+#     model_uri = '<YOUR MLFLOW MODEL LOCATION>'
 
+#     mlflow.sagemaker.deploy(
+#         mode='create',
+#         app_name=endpoint_name,
+#         model_uri=model_uri,
+#         image_url=image_uri,
+#         execution_role_arn=role,
+#         instance_type='ml.m5.xlarge',
+#         instance_count=1,
+#         region_name=region
+#     )
+    
     # pipeline instance
     pipeline = Pipeline(
         name=pipeline_name,

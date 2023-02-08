@@ -71,12 +71,13 @@ if __name__ == '__main__':
         mlflow.log_metric('accuracy', test_accuracy)
         mlflow.log_metric('f1', test_f1_score)
 
-        # # SAVE MODEL
-        # # YOU CAN ADD A METRIC CONDITION HERE BEFORE REGISTERING THE MODEL
-        # logging.info('REGISTERING MODEL')
-        # # Make sure the IAM role has access to the MLflow bucket
-        # mlflow.sklearn.log_model(
-        #     sk_model=model,
-        #     artifact_path='model',
-        #     registered_model_name=args.registered_model_name
-        # )
+        # SAVE MODEL
+        # YOU CAN ADD A METRIC CONDITION HERE BEFORE REGISTERING THE MODEL
+        logging.info('REGISTERING MODEL')
+        # Make sure the IAM role has access to the MLflow bucket
+        result = mlflow.sklearn.log_model(
+            sk_model=classifier,
+            artifact_path='model',
+            registered_model_name=args.mlflow_model_name
+        )
+        logging.info('----------------------------Logging Model Info containing model URI -------------------------------', result.model_uri)
