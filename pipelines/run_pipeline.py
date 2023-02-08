@@ -87,7 +87,13 @@ def main():  # pragma: no cover
         print("\n###### Created/Updated SageMaker Pipeline: Response received:")
         print(upsert_response)
 
-        execution = pipeline.start()
+        execution = pipeline.start(
+            parameters = dict(
+                MLflowTrackingURI="http://mlflow-lb-909049553.us-west-2.elb.amazonaws.com",
+                MLflowExperimentName="sagemaker-mlflow-iris-test",
+                MLflowModelName="sagemaker-mlflow-iris-model-test",
+            )
+        )
         print(f"\n###### Execution started with PipelineExecutionArn: {execution.arn}")
 
         print("Waiting for the execution to finish...")
