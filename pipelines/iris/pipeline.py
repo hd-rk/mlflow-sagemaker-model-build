@@ -133,6 +133,7 @@ def get_pipeline(
     base_job_prefix="Iris",
     processing_instance_type="ml.m5.large",
     training_instance_type="ml.m5.large",
+    source_code_version="",
 ):
     """Gets a SageMaker ML Pipeline instance working on iris data.
 
