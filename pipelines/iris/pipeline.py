@@ -134,6 +134,7 @@ def get_pipeline(
     processing_instance_type="ml.m5.large",
     training_instance_type="ml.m5.large",
     source_code_commit="",
+    source_pipeline_trigger="",
 ):
     """Gets a SageMaker ML Pipeline instance working on iris data.
 
@@ -202,6 +203,7 @@ def get_pipeline(
         'mlflow-experiment-name': mlflow_experiment_name,
         'mlflow-model-name': mlflow_model_name,
         'source-commit': source_code_commit,
+        'source-trigger': source_pipeline_trigger,
         'train-file': 'iris_train.csv',
         'test-file': 'iris_test.csv',
     }

@@ -19,6 +19,7 @@ if __name__ == '__main__':
     parser.add_argument("--mlflow-experiment-name", type=str)
     parser.add_argument("--mlflow-model-name", type=str)
     parser.add_argument("--source-commit", type=str, default="")
+    parser.add_argument("--source-trigger", type=str, default="")
     
     # hyperparameters sent by the client are passed as command-line arguments to the script.
     parser.add_argument('--max-leaf-nodes', type=int, default=1)
@@ -54,6 +55,7 @@ if __name__ == '__main__':
         mlflow.log_params(params)
 
         mlflow.set_tag("commit", args.source_commit)
+        mlflow.set_tag("trigger", args.source_trigger)
 
         # TRAIN
         logging.info('TRAINING MODEL')
