@@ -31,5 +31,5 @@ if __name__ == "__main__":
     
     # save train and test CSV files
     logger.info(f"Writing data to {args.output_dir}")
-    trainX.to_csv(f'{args.output_dir}/iris_train.csv')
-    testX.to_csv(f'{args.output_dir}/iris_test.csv')
+    trainX.to_csv(f'{args.output_dir}/iris_train.csv', index=False)
+    testX.to_csv(f'{args.output_dir}/iris_test.csv', index=False)
