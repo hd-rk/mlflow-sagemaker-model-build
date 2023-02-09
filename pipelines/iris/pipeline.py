@@ -223,17 +223,6 @@ def get_pipeline(
         disable_profiler=True
     )
     
-    # step_train = TrainingStep(
-    #     name="TrainModel",
-    #     estimator=estimator,
-    #     inputs={
-    #         "input": TrainingInput(
-    #             s3_data=step_process.properties.ProcessingOutputConfig.Outputs["data"].S3Output.S3Uri,
-    #             content_type="text/csv",
-    #         ),
-    #     },
-    # )
-    
     hyperparameter_ranges = {
         'max-leaf-nodes': IntegerParameter(2, 3),
         'max-depth': IntegerParameter(2, 3),
