@@ -78,9 +78,15 @@ if __name__ == '__main__':
 
         # SAVE MODEL
         logging.info('LOGGING MODEL')
-        result = mlflow.sklearn.log_model(
-            sk_model=classifier,
-            artifact_path='model',
-            # registered_model_name=args.mlflow_model_name,
-        )
+        if test_accuracy > 0.9:
+            result = mlflow.sklearn.log_model(
+                sk_model=classifier,
+                artifact_path='model',
+                registered_model_name=args.mlflow_model_name,
+            )
+        else:
+            result = mlflow.sklearn.log_model(
+                sk_model=classifier,
+                artifact_path='model',
+            )
         logging.info(f'----------------------------Logging Model Info containing model URI -------------------------------{result.model_uri}')

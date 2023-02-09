@@ -90,8 +90,8 @@ def main():  # pragma: no cover
         execution = pipeline.start(
             parameters = dict(
                 MLflowTrackingURI="http://mlflow-lb-909049553.us-west-2.elb.amazonaws.com",
-                MLflowExperimentName="sagemaker-mlflow-iris-test",
-                MLflowModelName="sagemaker-mlflow-iris-model-test",
+                MLflowExperimentName="sagemaker-mlflow-iris",
+                MLflowModelName="sagemaker-mlflow-iris-model",
             )
         )
         print(f"\n###### Execution started with PipelineExecutionArn: {execution.arn}")
